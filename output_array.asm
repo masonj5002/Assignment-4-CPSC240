@@ -8,7 +8,7 @@ extern printf
 global output_array
 
 segment .data
-output_header db "IEEE754             Scientific Decimal", 10, 0
+output_header db "IEEE754                              Scientific Decimal", 10, 0
 output_row_basic db "0x%016lx", 10, 0
 output_row db "0x%016lx                   %18.13g", 10, 0
 stringformat db "%s", 0
@@ -38,19 +38,28 @@ push r14
 push r15
 pushf
 ;********Program flow begins here********
-;print the array
-xor r15, r15    ;iterator
+mov r15, rdi ;number of rands
+mov r14, rsi ;address of array
+xor r13, r13 ;counter
 
-output_loop:
 mov rax, 0
 mov rdi, stringformat
 mov rsi, output_header
 call printf
 
-;display array
+output_loop:
+    ;show the version in decimal...
+    mov rax, 0
+    mov rdi, output_row
+    mov rsi, [r14+8*r13]
+    call printf
 
-inc r15
-end_loop:
+    inc r13
+    cmp r13, r15
+    jge loop_end
+    jmp output_loop
+loop_end:
+
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf

@@ -23,6 +23,8 @@ welcomemessage db "Nice to meet you ", 0
 intromessage db "This program will generate 64-bit IEEE float numbers.", 10, 0
 inputmessage db "How many numbers do you want? Today's limit is 100 per customer: ", 0
 outputmessage db "Your numbers have been stored in an array. Here is that array:", 10, 0
+
+random_number_message db "The random number is: 0X%016lx , %-18.13g", 10, 0 ;TEMP FOR DEBUGGING -- DELETE WHEN FINISHED
 goodbyemessagep1 db "Good bye ", 0
 goodbyemessagep2 db ". You are welcome any time.", 10, 0
 singlespace db " ", 0 ; a single space
@@ -142,7 +144,7 @@ call scanf
 
 ;later -- provide input validation for INPUT
 
-;call fill_random_array -- (creates only -- does not display)************************************************************************
+;call fill_random_array -- ********************************************************************************************************************
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array ;the actual array (or at least the address of it)
@@ -158,8 +160,16 @@ mov rdi, stringformat
 mov rsi, newline
 call printf
 
+;DEBUGGING SHOW ARRAY HERE
+mov rax, 0
+mov rdi, random_number_message
+mov rsi, [array] ;prints first value
+call printf
+
 ;call output_array (displays only -- does not create) ************************************************************************************
 mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array ;the address of the actual array
 call output_array
 
 ;newline
