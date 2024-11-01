@@ -10,9 +10,11 @@ extern fgets
 extern stdin
 extern strlen
 extern fill_random_array
+extern output_array
 global executive
 max_string_size equ 32
 max_int_size equ 32
+max_array_size equ 512
 
 segment .data
 namemessage db "Please enter your name: ", 0
@@ -32,6 +34,7 @@ segment .bss
 users_name resb max_string_size
 users_title resb max_string_size
 numofrands resq max_int_size
+array resq max_array_size
 
 segment .text
 ;****Program begins executing here****
@@ -120,10 +123,10 @@ pushf
 ;call printf
 
 ;Intro Message
-mov rax, 0
-mov rdi, stringformat
-mov rsi, intromessage
-call printf
+;mov rax, 0
+;mov rdi, stringformat
+;mov rsi, intromessage
+;call printf
 
 ;Input Message
 mov rax, 0
@@ -134,19 +137,15 @@ call printf
 ;Obtain Value
 mov qword rax, 0
 mov rdi, intformat
-mov rsi, numofrands
+mov rsi, numofrands ;send value to fill_random_array
 call scanf
 
 ;later -- provide input validation for INPUT
 
-;output input value (DELETEME)
-mov rax, 0
-mov rdi, intformat
-mov rsi, [numofrands]
-call printf
-
 ;call fill_random_array -- (creates only -- does not display)************************************************************************
 mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array ;the actual array (or at least the address of it)
 call fill_random_array ;***
 
 ;Output Message
@@ -160,7 +159,8 @@ mov rsi, newline
 call printf
 
 ;call output_array (displays only -- does not create) ************************************************************************************
-;mov rax, 0
+mov rax, 0
+call output_array
 
 ;newline
 mov rax, 0
@@ -181,7 +181,7 @@ mov rdi, stringformat
 mov rsi, goodbyemessagep2 ;". You are welcome any time"
 call printf
 
-;** Return the string, that is now stored in a named constant, to the calling program ** (From Holliday)
+;** Return the string, that is now stored in a named constant, to the calling program ** (From Holliday) (Requried to prevent segfault)
 mov rax, qword users_name               ;Put a copy of users_name in xmm0
 push rax                                ;Now users_name is on top of the stack
 movsd xmm0, [rsp]                       ;Now there is a copy of 3.5 in xmm0

@@ -10,7 +10,8 @@ global fill_random_array
 
 segment .data
 conclusion_message db "The program has finished. Hello from fill_random_array!", 10, 0
-random_number_message db "The random number in IEEE is: 0x%016lx", 10, 0
+random_number_message db "The random number is: 0X%016lx , %-18.13g", 10, 0
+newline db "", 10, 0
 stringformat db "%s", 0
 
 segment .bss
@@ -37,28 +38,46 @@ push r14
 push r15
 pushf
 ;********Program flow begins here********
-;Generate a random number:
-rdrand r15
+mov r15, rdi ;number of rands
+mov r14, rsi ;the address of the array
+xor r13, r13 ;counter
 
-;move the random number into xmm15 by pushing it onto the stack
-push r15                    ;rsp will point to r15
-movsd xmm15, [rsp]          ;dereference the value in rsp and move it into xmm15
-pop rbx                     ;pop to balance the stack (every push must have a pop)
+;place [r14 # of values of] random numbers in array
+input_loop:
+    ; Generate random value
+    rdrand rbx
 
-;Print out the random number in IEEE and scientific format
-mov rax, 1
-mov rdi, random_number_message
-mov rsi, r15
-movsd xmm0, xmm15
-call printf
+    ;printf the random value
+    mov rax, 0
+    mov rdi, random_number_message
+    mov rsi, rbx
+    call printf
 
-;conclusion message
+    mov [r14+r13*8], rbx
+    
+    inc r13
+    cmp r13, r15
+    jge loop_end
+    jmp input_loop
+loop_end:
+
+;debugging output
+;printf the first output
 mov rax, 0
 mov rdi, stringformat
-mov rsi, conclusion_message
+mov rsi, newline
 call printf
 
+mov rax, 0
+mov rdi, random_number_message
+mov rsi, [r14+792]
+call printf
 
+;newline deleteme
+mov rax, 0
+mov rdi, stringformat
+mov rsi, newline
+call printf
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf
