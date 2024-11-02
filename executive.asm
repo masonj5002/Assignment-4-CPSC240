@@ -11,6 +11,7 @@ extern stdin
 extern strlen
 extern fill_random_array
 extern output_array
+extern normalize_array
 global executive
 max_string_size equ 32
 max_int_size equ 32
@@ -161,16 +162,28 @@ mov rsi, newline
 call printf
 
 ;DEBUGGING SHOW ARRAY HERE
-mov rax, 0
-mov rdi, random_number_message
-mov rsi, [array] ;prints first value
-call printf
+;mov rax, 0
+;mov rdi, random_number_message
+;mov rsi, [array] ;prints first value
+;call printf
 
 ;call output_array (displays only -- does not create) ************************************************************************************
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array ;the address of the actual array
 call output_array
+
+;newline
+mov rax, 0
+mov rdi, stringformat
+mov rsi, newline
+call printf
+
+;Normalize and Display Array
+mov rax, 0
+call normalize_array
+
+;Sort and Display Array
 
 ;newline
 mov rax, 0

@@ -48,10 +48,13 @@ mov rsi, output_header
 call printf
 
 output_loop:
-    ;show the version in decimal...
-    mov rax, 0
+    ;in-order to show in decimal, move value into xmm15 by pushing it onto the stack
+    movsd xmm15, [r14+8*r13]          ;derefrence the value in rsp and move it to xmm15
+
+    mov rax, 1
     mov rdi, output_row
     mov rsi, [r14+8*r13]
+    movsd xmm0, xmm15
     call printf
 
     inc r13
