@@ -36,6 +36,10 @@ push r14
 push r15
 pushf
 ;********Program flow begins here********
+mov r15, rdi, ;number of rands
+mov r14, rsi  ;address of array
+xor r13, r13  ;counter
+
 ;DEBUGGING -- REMOVE
 mov rax, 0
 mov rdi, stringformat
@@ -43,6 +47,23 @@ mov rsi, initialmessage
 call printf
 
 ;normalize the values in the array
+;create a loop in order to normalize the values
+normailize_loop:
+    ;normalize value
+    mov rdi, [r14+8*r13]
+    mov r12, 0x000FFFFFFFFFFFFF
+    and rdi, r12
+    mov r11, 0x3FF0000000000000
+    or rdi, r11
+
+    ;place into array
+    mov [r14+8*r13], rdi
+
+    inc r13
+    cmp r13, r15
+    jge loop_end
+    jmp normailize_loop
+loop_end:
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf

@@ -181,9 +181,17 @@ call printf
 
 ;Normalize and Display Array
 mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array ;the address of the actual array
 call normalize_array
 
+mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array ;address of actual array
+call output_array
+
 ;Sort and Display Array
+
 
 ;newline
 mov rax, 0
