@@ -78,6 +78,7 @@ mov rax, 0
 mov rdi, stringformat
 mov rsi, newline
 call printf
+
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf

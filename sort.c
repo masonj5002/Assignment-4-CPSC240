@@ -12,11 +12,19 @@ int sort(int len, unsigned long int *array) {
     printf("The 3rd random number is 0x%016lx\n", array[2]);
     printf("The 4th random number is 0x%016lx\n", array[3]);
 
-    //array[2] = 0;
-
-    //printf("The 2nd random number is 0x%016lx", *(array+8));
-    //make sure program can read array by displaying elements of the array first
-    //then, make the sorting algorithm (bubble sort?)
+    // sort
+    for (int i = 0; i < len; i++)
+    {
+        for (int j = i; j < len; j++)
+        {
+            if (array[j] < array[i])
+            {
+                unsigned long int temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+    }
 
     return 0;
 }
