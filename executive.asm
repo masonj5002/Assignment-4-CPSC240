@@ -12,6 +12,7 @@ extern strlen
 extern fill_random_array
 extern output_array
 extern normalize_array
+extern sort
 global executive
 max_string_size equ 32
 max_int_size equ 32
@@ -191,7 +192,10 @@ mov rsi, array ;address of actual array
 call output_array
 
 ;Sort and Display Array
-
+mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array
+call sort
 
 ;newline
 mov rax, 0

@@ -21,11 +21,14 @@ nasm -f elf64 -o output_array.o output_array.asm
 echo "Assemble the x86 file normalize_array.asm"
 nasm -f elf64 -o normalize_array.o normalize_array.asm
 
+echo "Compile the 'C' file sort.c"
+gcc -c -fno-pie -no-pie -o sort.o sort.c
+
 echo "Compile the 'C' file main.c"
 gcc -c -fno-pie -no-pie -o main.o main.c
 
 echo "Link the NASM and 'C' files"
-gcc -m64 -o go.out executive.o fill_random_array.o output_array.o normalize_array.o main.o -fno-pie -no-pie
+gcc -m64 -o go.out executive.o fill_random_array.o output_array.o normalize_array.o sort.o main.o -fno-pie -no-pie
 
 echo "Next, the program will run:
 *********************************************************
