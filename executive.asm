@@ -197,6 +197,11 @@ mov rdi, [numofrands]
 mov rsi, array
 call sort
 
+mov rax, 0
+mov rdi, [numofrands]
+mov rsi, array ;address of actual array
+call output_array
+
 ;newline
 mov rax, 0
 mov rdi, stringformat
