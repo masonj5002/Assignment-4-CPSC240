@@ -27,6 +27,7 @@ inputmessage db "How many numbers do you want? Today's limit is 100 per customer
 outputmessage db "Your numbers have been stored in an array. Here is that array:", 10, 0
 
 random_number_message db "The random number is: 0X%016lx , %-18.13g", 10, 0 ;TEMP FOR DEBUGGING -- DELETE WHEN FINISHED
+input_error_msg db "    You have entered a value outside of the range. Please try again.", 10, 0
 goodbyemessagep1 db "Good bye ", 0
 goodbyemessagep2 db ". You are welcome any time.", 10, 0
 singlespace db " ", 0 ; a single space
@@ -132,6 +133,7 @@ pushf
 ;mov rsi, intromessage
 ;call printf
 
+rand_input:
 ;Input Message
 mov rax, 0
 mov rdi, stringformat
@@ -143,6 +145,27 @@ mov qword rax, 0
 mov rdi, intformat
 mov rsi, numofrands ;send value to fill_random_array
 call scanf
+
+;Check range (0 <= x <= 100)
+mov r12, qword[numofrands]
+cmp r12, 0
+jl input_error
+cmp r12, 100
+jg input_error
+jmp continue
+
+input_error:
+    mov rax, 0
+    mov rdi, stringformat
+    mov rsi, input_error_msg
+    call printf
+    mov rax, 0
+    mov rdi, stringformat
+    mov rsi, newline
+    call printf
+    jmp rand_input
+
+continue:
 
 ;later -- provide input validation for INPUT
 
