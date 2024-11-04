@@ -24,14 +24,14 @@ titlemessage db "Please enter your title (Mr,Ms,Sargent,Chief,Project Leader,etc
 welcomemessage db "Nice to meet you ", 0
 intromessage db "This program will generate 64-bit IEEE float numbers.", 10, 0
 inputmessage db "How many numbers do you want? Today's limit is 100 per customer: ", 0
-outputmessage db "Your numbers have been stored in an array. Here is that array:", 10, 0
-
-random_number_message db "The random number is: 0X%016lx , %-18.13g", 10, 0 ;TEMP FOR DEBUGGING -- DELETE WHEN FINISHED
 input_error_msg db "    You have entered a value outside of the range. Please try again.", 10, 0
+outputmessage db "Your numbers have been stored in an array. Here is that array:", 10, 0
+normalizemessage db "The array will now be normalized to the rage 1.0 to 2.0. Here is the normalized array:", 10, 0
+sortmessage db "The array will new be sorted:", 10, 0
 goodbyemessagep1 db "Good bye ", 0
 goodbyemessagep2 db ". You are welcome any time.", 10, 0
-singlespace db " ", 0 ; a single space
-newline db "", 10, 0 ; a newline
+singlespace db " ", 0
+newline db "", 10, 0
 stringformat db "%s", 0
 intformat db "%d", 0
 
@@ -133,8 +133,8 @@ pushf
 ;mov rsi, intromessage
 ;call printf
 
-rand_input:
 ;Input Message
+rand_input:
 mov rax, 0
 mov rdi, stringformat
 mov rsi, inputmessage
@@ -160,20 +160,17 @@ input_error:
     mov rsi, input_error_msg
     call printf
     mov rax, 0
-    mov rdi, stringformat
-    mov rsi, newline
+    mov rdi, newline
     call printf
     jmp rand_input
 
 continue:
 
-;later -- provide input validation for INPUT
-
-;call fill_random_array -- ********************************************************************************************************************
+;call fill_random_array
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array ;the actual array (or at least the address of it)
-call fill_random_array ;***
+call fill_random_array
 
 ;Output Message
 mov rax, 0
@@ -181,17 +178,10 @@ mov rdi, stringformat
 mov rsi, outputmessage
 call printf
 mov rax, 0
-mov rdi, stringformat
-mov rsi, newline
+mov rdi, newline
 call printf
 
-;DEBUGGING SHOW ARRAY HERE
-;mov rax, 0
-;mov rdi, random_number_message
-;mov rsi, [array] ;prints first value
-;call printf
-
-;call output_array (displays only -- does not create) ************************************************************************************
+;call output_array
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array ;the address of the actual array
@@ -199,11 +189,18 @@ call output_array
 
 ;newline
 mov rax, 0
-mov rdi, stringformat
-mov rsi, newline
+mov rdi, newline
 call printf
 
 ;Normalize and Display Array
+mov rax, 0
+mov rdi, stringformat
+mov rsi, normalizemessage
+call printf
+mov rax, 0
+mov rdi, newline
+call printf
+
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array ;the address of the actual array
@@ -214,7 +211,20 @@ mov rdi, [numofrands]
 mov rsi, array ;address of actual array
 call output_array
 
+;newline
+mov rax, 0
+mov rdi, newline
+call printf
+
 ;Sort and Display Array
+mov rax, 0
+mov rdi, stringformat
+mov rsi, sortmessage
+call printf
+mov rax, 0
+mov rdi, newline
+call printf
+
 mov rax, 0
 mov rdi, [numofrands]
 mov rsi, array
@@ -227,9 +237,9 @@ call output_array
 
 ;newline
 mov rax, 0
-mov rdi, stringformat
-mov rsi, newline
+mov rdi, newline
 call printf
+
 ;Goodbye message
 mov rax, 0
 mov rdi, stringformat
@@ -238,17 +248,17 @@ call printf ;"Good bye "
 mov rax, 0
 mov rdi, stringformat
 mov rsi, users_title
-call printf ;User's Title
+call printf
 mov rax, 0
 mov rdi, stringformat
 mov rsi, goodbyemessagep2 ;". You are welcome any time"
 call printf
 
-;** Return the string, that is now stored in a named constant, to the calling program ** (From Holliday) (Requried to prevent segfault)
-mov rax, qword users_name               ;Put a copy of users_name in xmm0
-push rax                                ;Now users_name is on top of the stack
-movsd xmm0, [rsp]                       ;Now there is a copy of 3.5 in xmm0
-pop rax                                 ;Return the stack to its former state
+;** Return the string to the calling program
+mov rax, qword users_name
+push rax
+movsd xmm0, [rsp]
+pop rax
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf

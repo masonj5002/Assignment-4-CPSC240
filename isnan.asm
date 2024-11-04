@@ -3,8 +3,6 @@
 ;  Author name: Mason Jennings
 ;  Author email: masonj@csu.fullerton.edu
 ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
-
-extern printf
 global isnan
 
 segment .data
@@ -38,13 +36,6 @@ push r15
 pushf
 ;********Program flow begins here********
 movsd xmm14, qword[pi]      ;placing 3.14 into xmm14
-
-;DELETE WHEN FINISHED!
-mov r15, rdi ;value
-mov rax, 0
-mov rdi, random_number_message
-mov rsi, r15
-call printf
 
 ;move value into xmm15 by placing it into the stack
 push r15

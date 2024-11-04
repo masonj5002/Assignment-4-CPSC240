@@ -3,8 +3,6 @@
 ;  Author name: Mason Jennings
 ;  Author email: masonj@csu.fullerton.edu
 ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
-
-extern printf
 extern rdrand
 extern isnan
 global fill_random_array
@@ -48,7 +46,7 @@ input_loop:
     ; Generate random value
     rdrand rbx
 
-    ;************************************isnan************************************
+    ;check for nans
     mov rax, 0
     mov rdi, rbx
     call isnan
@@ -60,12 +58,6 @@ input_loop:
     jmp input_loop ;regenerate if nan
 
     func_cont:
-        ;printf the random value
-        mov rax, 0
-        mov rdi, random_number_message
-        mov rsi, rbx
-        call printf
-
         mov [r14+r13*8], rbx
         
         inc r13
@@ -73,25 +65,6 @@ input_loop:
         jge loop_end
         jmp input_loop
 loop_end:
-
-;debugging output
-;printf the first output
-mov rax, 0
-mov rdi, stringformat
-mov rsi, newline
-call printf
-
-mov rax, 0
-mov rdi, random_number_message
-mov rsi, [r14+792]
-call printf
-
-;newline deleteme
-mov rax, 0
-mov rdi, stringformat
-mov rsi, newline
-call printf
-
 ;********Program flow ends here**********
 ;Restore data to the values held before this function was called.
 popf

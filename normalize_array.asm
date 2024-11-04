@@ -3,13 +3,10 @@
 ;  Author name: Mason Jennings
 ;  Author email: masonj@csu.fullerton.edu
 ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
-
-extern printf
 global normalize_array
 
 segment .data
-initialmessage db "Hello from normaize array!", 10, 0
-stringformat db "%s", 0
+;empty
 
 segment .bss
 ;empty
@@ -39,12 +36,6 @@ pushf
 mov r15, rdi, ;number of rands
 mov r14, rsi  ;address of array
 xor r13, r13  ;counter
-
-;DEBUGGING -- REMOVE
-mov rax, 0
-mov rdi, stringformat
-mov rsi, initialmessage
-call printf
 
 ;normalize the values in the array
 ;create a loop in order to normalize the values
