@@ -6,6 +6,7 @@
 
 extern printf
 extern rdrand
+extern isnan
 global fill_random_array
 
 segment .data
@@ -47,18 +48,30 @@ input_loop:
     ; Generate random value
     rdrand rbx
 
-    ;printf the random value
+    ;************************************isnan************************************
     mov rax, 0
-    mov rdi, random_number_message
-    mov rsi, rbx
-    call printf
+    mov rdi, rbx
+    call isnan
 
-    mov [r14+r13*8], rbx
-    
-    inc r13
-    cmp r13, r15
-    jge loop_end
-    jmp input_loop
+    ;nan detection
+    cmp rax, 0
+    je func_cont
+
+    jmp input_loop ;regenerate if nan
+
+    func_cont:
+        ;printf the random value
+        mov rax, 0
+        mov rdi, random_number_message
+        mov rsi, rbx
+        call printf
+
+        mov [r14+r13*8], rbx
+        
+        inc r13
+        cmp r13, r15
+        jge loop_end
+        jmp input_loop
 loop_end:
 
 ;debugging output
