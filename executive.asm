@@ -63,76 +63,79 @@ push r14
 push r15
 pushf
 ;********Program flow begins here********
+;PART I ~ INTRODUCTION
 ;name message
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, namemessage
-;call printf
+mov rax, 0
+mov rdi, stringformat
+mov rsi, namemessage
+call printf
 
 ;obtain name
-;mov qword rax, 0
-;mov rdi, users_name
-;mov rsi, max_string_size
-;mov rdx, [stdin]
-;call fgets
+mov qword rax, 0
+mov rdi, users_name
+mov rsi, max_string_size
+mov rdx, [stdin]
+call fgets
 ;remove newline
-;mov rax, 0
-;mov rdi, users_name
-;call strlen
-;mov [users_name+rax-1], byte 0
+mov rax, 0
+mov rdi, users_name
+call strlen
+mov [users_name+rax-1], byte 0
 
 ;title message
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, titlemessage
-;call printf
+mov rax, 0
+mov rdi, stringformat
+mov rsi, titlemessage
+call printf
 
 ;obtain title
-;mov qword rax, 0
-;mov rdi, users_title
-;mov rsi, max_string_size
-;mov rdx, [stdin]
-;call fgets
+mov qword rax, 0
+mov rdi, users_title
+mov rsi, max_string_size
+mov rdx, [stdin]
+call fgets
 ;remove newline
-;mov rax, 0
-;mov rdi, users_title
-;call strlen
-;mov [users_title+rax-1], byte 0
+mov rax, 0
+mov rdi, users_title
+call strlen
+mov [users_title+rax-1], byte 0
 
 ;Display Welcome Message
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, welcomemessage
-;call printf ;welome message
-;mov rax,  0
-;mov rdi, stringformat
-;mov rsi, users_title
-;call printf ;user's title
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, singlespace
-;call printf ; a single space
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, users_name
-;call printf ;user's name
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, newline
-;call printf ;newline
+mov rax, 0
+mov rdi, stringformat
+mov rsi, welcomemessage
+call printf ;welome message
+mov rax,  0
+mov rdi, stringformat
+mov rsi, users_title
+call printf ;user's title
+mov rax, 0
+mov rdi, stringformat
+mov rsi, singlespace
+call printf ; a single space
+mov rax, 0
+mov rdi, stringformat
+mov rsi, users_name
+call printf ;user's name
+mov rax, 0
+mov rdi, stringformat
+mov rsi, newline
+call printf ;newline
 
 ;newline
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, newline
-;call printf
+mov rax, 0
+mov rdi, stringformat
+mov rsi, newline
+call printf
 
 ;Intro Message
-;mov rax, 0
-;mov rdi, stringformat
-;mov rsi, intromessage
-;call printf
+mov rax, 0
+mov rdi, stringformat
+mov rsi, intromessage
+call printf
 
+
+;PART II ~ RANDOM NUMBER ARRAY
 ;Input Message
 rand_input:
 mov rax, 0
